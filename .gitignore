@@ -218,3 +218,21 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# -------------------------
+# Project-specific ignores
+# -------------------------
+
+# Pywikibot configuration and login files
+user-config.py
+*.lwp
+throttle.ctrl
+
+# Pywikibot API cache
+apicache/
+
+# Sensitive credentials
+passwords.txt
+
+# Windows junk
+Thumbs.db
