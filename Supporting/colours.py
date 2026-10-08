@@ -1,6 +1,4 @@
-#Cosmetic values, can be changed
-DISAMBIG_LINK = "\033[38;5;214m" #ANSI escape code used for disambiguation links
-SHORT_DESC = "\033[38;5;17m" #ANSI escape code used for short description
-
-#Important values, do not change
-RESET = "\033[0m"
+def apply_text_styles(textbox):
+    textbox.tag_config("Disambig", foreground="#ff8800")
+    textbox.tag_config("Short_desc", foreground="#ca9df7")
+    textbox.tag_config("Title", foreground="#00bbff")
