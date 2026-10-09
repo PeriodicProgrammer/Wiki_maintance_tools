@@ -18,8 +18,8 @@ def page_gen():
         disambigs = helpers.walk_category(pywikibot.Category(site, settings.Category))
     else:
         import json
-        with open("data.json", "r") as f:
-            disambigs = [i for i in json.load(f)]
+        with open("Disambig_linker/disambiguation_pages.json", "r") as f:
+            disambigs = [pywikibot.Page(site, i) for i in json.load(f)]
     for disambig in disambigs:
         yield ("Disambig", disambig)
         for page in disambig.getReferences(namespaces=[0], follow_redirects=True):
