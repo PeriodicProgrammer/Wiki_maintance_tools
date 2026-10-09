@@ -6,15 +6,20 @@ from pywikibot import textlib
 import Supporting.general_helpers as helpers
 from Supporting.colours import apply_text_styles
 import delinker_funcs as dl_func
+import settings
 
 ctk.set_appearance_mode("dark")
 ctk.set_default_color_theme("blue")
-site = pywikibot.Site('en', 'wikipedia')
+site = settings.site
 site.login()
-root_cat = pywikibot.Category(site, "Category:Disambiguation pages with many incoming links")
 
 def page_gen():
-    disambigs = helpers.walk_category(root_cat)
+    if settings.Category is not None:
+        disambigs = helpers.walk_category(pywikibot.Category(site, settings.Category))
+    else:
+        import json
+        with open("data.json", "r") as f:
+            disambigs = [i for i in json.load(f)]
     for disambig in disambigs:
         yield ("Disambig", disambig)
         for page in disambig.getReferences(namespaces=[0], follow_redirects=True):
@@ -87,8 +92,12 @@ class App(ctk.CTk):
 
     def submit(self):
         user_input = self.input_entry.get()
-
-        # Example logic
+        if not user_input == "":
+            try:
+                num = int(user_input)
+            except:
+                pass
+        
         self.fill_info()
 app = App()
 app.mainloop()
