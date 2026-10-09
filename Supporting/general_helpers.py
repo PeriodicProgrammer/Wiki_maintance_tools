@@ -31,10 +31,20 @@ def section_gen(page, site):
                 yield i.content
         elif isinstance(i, textlib.SectionList):
             yield from section_gen(i, site)
-if __name__ == "__main__":    
+
+def get_wikilinks(text, full=False):
+    if full:
+        links = {"".join(i) for i in re.findall(r"(\[\[)([^\]\|]+)(\s?)(\|[^\]\|]*\s?)?(\]\])", text)}
+    else:
+        links = {i[0] for i in re.findall(r"\[\[([^\]\|]+)\s?(\|[^\]\|]*\s?)?\]\]", text)}
+    return links
+
+def get_redirects(page):
+    return {i.title() for i in page.redirects()}
+
+
+
+if __name__ == "__main__":
     site = pywikibot.Site('en', 'wikipedia')
     site.login()
-
-    secs = section_gen(pywikibot.Page(site, "Mercury (element)"), site)
-    for i in secs:
-        input()
+    print(get_redirects(pywikibot.Page(site, "Water")))
