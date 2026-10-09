@@ -19,11 +19,13 @@ def page_gen():
         yield ("Disambig", disambig)
         for page in disambig.getReferences(namespaces=[0], follow_redirects=True):
             yield ("Page", page)
+            for section in dl_func.secs_with_disambig(page, disambig):
+                yield ("Section", section)
 
 class App(ctk.CTk):
     def __init__(self):
         super().__init__()
-        self.title("Side-by-Side Output GUI")
+        self.title("Disambiguation page delinker")
         self.geometry("800x500")
 
         # Frame to hold the two outputs side-by-side
@@ -68,12 +70,20 @@ class App(ctk.CTk):
 
             self.fill_info()
         elif type == "Page":
+            self.page, self.short_desc = page, helpers.get_short_description(page)
             self.output2.delete("0.0", "end")
             self.output2.insert("0.0", f"{page.title()}\n", "Title")
-            short_desc = helpers.get_short_description(page)
-            if short_desc is not None:
+            if self.short_desc is not None:
                 self.output2.insert("end", "Short description: ")
-                self.output2.insert("end", f"{short_desc}\n", "Short_desc")
+                self.output2.insert("end", f"{self.short_desc}\n", "Short_desc")
+            self.fill_info()
+        elif type == "Section":
+            self.output2.delete("0.0", "end")
+            self.output2.insert("0.0", f"{self.page.title()}\n", "Title")
+            if self.short_desc is not None:
+                self.output2.insert("end", "Short description: ")
+                self.output2.insert("end", f"{self.short_desc}\n", "Short_desc")
+            self.output2.insert("end", page)
 
     def submit(self):
         user_input = self.input_entry.get()
