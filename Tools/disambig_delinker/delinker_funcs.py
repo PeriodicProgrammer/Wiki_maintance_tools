@@ -23,3 +23,9 @@ def has_disambig_link(sec, target):
     redirects = helpers.get_redirects(target)
     result = links & redirects
     return result != 0
+
+def secs_with_disambig(page, target):
+    sections = helpers.section_gen(page)
+    for i in sections:
+        if has_disambig_link(i, target):
+            yield i
