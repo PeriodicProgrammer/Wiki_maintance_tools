@@ -17,7 +17,7 @@ def get_short_description(page):
 def clear():
     print("\033c", end="")
 
-def section_gen(page, site):
+def section_gen(page, site=pywikibot.Site('en', 'wikipedia')):
     if isinstance(page, pywikibot.Page):
         secs = pywikibot.textlib.extract_sections(page.text, site)
     else:
