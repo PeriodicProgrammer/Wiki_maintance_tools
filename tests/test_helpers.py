@@ -17,5 +17,8 @@ class TestHelpers(unittest.TestCase):
     def test_get_wikilinks(self):
         self.assertEqual(helpers.get_wikilinks(disambig_test.text), helpers.get_wikilinks(disambig_test))
         self.assertEqual(helpers.get_wikilinks(disambig_test), {"disambiguation (disambiguation)", "WP:Disambiguation", "WP:Tools"})
+    def test_get_redirects(self):
+        self.assertEqual(helpers.get_redirects(disambig_test), set())
+        self.assertTrue("H2O" in helpers.get_redirects(pywikibot.Page(site, "Water")))
 if __name__ == "__main__":
     unittest.main()
