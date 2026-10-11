@@ -21,5 +21,5 @@ jobs:
           pip install -r requirements.txt || true
 
       - name: Run tests
-        run: python -m unittest discover -s Wiki_maintance_tools/tests -p "test*.py" -v
+        run: python -m unittest discover -s tests -t . -p "test*.py" -v
 
