@@ -4,6 +4,10 @@ on:
   push:
   pull_request:
 
+permissions:
+  contents: read
+  pull-requests: write
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -22,4 +26,3 @@ jobs:
 
       - name: Run tests
         run: python -m unittest discover -s tests -t . -p "test*.py" -v
-
