@@ -16,5 +16,6 @@ class TestHelpers(unittest.TestCase):
         self.assertEqual(next(generator).strip("\n "), "* [[WP:Disambiguation]]\n* [[WP:Tools]]\n{{Nobots}}")
     def test_get_wikilinks(self):
         self.assertEqual(helpers.get_wikilinks(disambig_test.text), helpers.get_wikilinks(disambig_test))
+        self.assertEqual(helpers.get_wikilinks(disambig_test), {"disambiguation (disambiguation)", "WP:Disambiguation", "WP:Tools"})
 if __name__ == "__main__":
     unittest.main()
