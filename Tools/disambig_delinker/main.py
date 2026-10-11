@@ -14,6 +14,7 @@ site = settings.site
 site.login()
 
 def page_gen():
+    print("Page generating")
     if settings.Category is not None:
         disambigs = helpers.walk_category(pywikibot.Category(site, settings.Category))
     else:
@@ -21,8 +22,10 @@ def page_gen():
         with open("Disambig_linker/disambiguation_pages.json", "r") as f:
             disambigs = [pywikibot.Page(site, i) for i in json.load(f)]
     for disambig in disambigs:
+        print(disambig)
         yield ("Disambig", disambig)
         for page in disambig.getReferences(namespaces=[0], follow_redirects=True):
+            print(page)
             yield ("Page", page)
             for section in dl_func.secs_with_disambig(page, disambig):
                 yield ("Section", section)
@@ -57,7 +60,7 @@ class App(ctk.CTk):
         apply_text_styles(self.output2._textbox)
 
         self.gen = page_gen()
-        self.fill_info()
+        #self.fill_info()
     def fill_info(self):
         try:
             type, page = next(self.gen)
@@ -73,15 +76,10 @@ class App(ctk.CTk):
             for i,j in dl_func.get_dismabig_targets(page).items():
                 self.output1.insert("end", f"{i}. {j}\n")
 
-            self.fill_info()
+            self.after(10, self.fill_info)
         elif type == "Page":
             self.page, self.short_desc = page, helpers.get_short_description(page)
-            self.output2.delete("0.0", "end")
-            self.output2.insert("0.0", f"{page.title()}\n", "Title")
-            if self.short_desc is not None:
-                self.output2.insert("end", "Short description: ")
-                self.output2.insert("end", f"{self.short_desc}\n", "Short_desc")
-            self.fill_info()
+            self.after(10, self.fill_info)
         elif type == "Section":
             self.output2.delete("0.0", "end")
             self.output2.insert("0.0", f"{self.page.title()}\n", "Title")
@@ -99,6 +97,8 @@ class App(ctk.CTk):
                 pass
         
         self.fill_info()
-app = App()
-app.mainloop()
+
+if __name__ == "__main__":
+    app = App()
+    app.mainloop()
 
