@@ -9,13 +9,10 @@ def walk_category(cat):
 
 def get_short_description(page):
     page_text = page.text
-    short_desc = re.search(r"\{\{short description\s*\|([^\}]+)}}", page_text)
+    short_desc = re.search(r"\{\{[sS]hort description\s*\|([^\}]+)}}", page_text)
     if short_desc is not None:
         return short_desc.group(1)
     return None
-
-def clear():
-    print("\033c", end="")
 
 def section_gen(page, site=pywikibot.Site('en', 'wikipedia')):
     if isinstance(page, pywikibot.Page):
@@ -33,6 +30,8 @@ def section_gen(page, site=pywikibot.Site('en', 'wikipedia')):
             yield from section_gen(i, site)
 
 def get_wikilinks(text, full=False):
+    if isinstance(text, pywikibot.Page):
+        text = text.text
     if full:
         links = {"".join(i) for i in re.findall(r"(\[\[)([^\]\|]+)(\s?)(\|[^\]\|]*\s?)?(\]\])", text)}
     else:
@@ -47,4 +46,4 @@ def get_redirects(page):
 if __name__ == "__main__":
     site = pywikibot.Site('en', 'wikipedia')
     site.login()
-    print(get_redirects(pywikibot.Page(site, "Water")))
+    print(get_short_description(pywikibot.Page(site, "User:PeriodicEditor2/tests/disambig-delinker")))
