@@ -39,6 +39,8 @@ def get_wikilinks(text, full=False):
     return links
 
 def get_redirects(page):
+    if isinstance(page, str):
+        page = pywikibot.Page(pywikibot.Site('en', 'wikipedia'), page)
     return {i.title() for i in page.redirects()}
 
 
