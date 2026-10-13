@@ -3,7 +3,7 @@ import sys, os
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 import Supporting.general_helpers as helpers
 import pywikibot
-
+import Tools.disambig_delinker.delinker_funcs as delinker_funcs
 site = pywikibot.Site('en', 'wikipedia')
 disambig_test = pywikibot.Page(site, "User:PeriodicEditor2/tests/disambig-delinker")
 class TestHelpers(unittest.TestCase):
@@ -20,5 +20,8 @@ class TestHelpers(unittest.TestCase):
     def test_get_redirects(self):
         self.assertEqual(helpers.get_redirects(disambig_test), set())
         self.assertTrue("H2O" in helpers.get_redirects(pywikibot.Page(site, "Water")))
+class TestDisambigFuncs(unittest.TestCase):
+    def test_has_disambig_link(self):
+        self.assertEqual(delinker_funcs.has_disambig_link(disambig_test.text, "Disambiguation (disambiguation)"), True)
 if __name__ == "__main__":
     unittest.main()
