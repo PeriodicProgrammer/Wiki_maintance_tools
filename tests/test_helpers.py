@@ -13,7 +13,7 @@ class TestHelpers(unittest.TestCase):
     def test_section_gen(self):
         generator = helpers.section_gen(disambig_test)
         self.assertEqual(next(generator).strip("\n "), "{{Short description|Test page for tool created by PeriodicEditor}}\nPlease don't edit this page, as it will break testing a tool for retargeting [[disambiguation (disambiguation)|disambiguation]] links.")
-        self.assertEqual(next(generator).strip("\n "), "* [[WP:Disambiguation]]\n* [[WP:Tools]]\n{{Nobots}}")
+        self.assertEqual(next(generator).strip("\n "), "* [[WP:Disambiguation]]\n* [[WP:Tools]]\n* [[Disambiguation of disambiguation]]\n{{Nobots}}")
     def test_get_wikilinks(self):
         self.assertEqual(helpers.get_wikilinks(disambig_test.text), helpers.get_wikilinks(disambig_test))
         self.assertEqual(helpers.get_wikilinks(disambig_test), {"disambiguation (disambiguation)", "WP:Disambiguation", "WP:Tools", "Disambiguation of disambiguation"})
