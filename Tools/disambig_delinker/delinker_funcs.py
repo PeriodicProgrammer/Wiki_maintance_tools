@@ -2,8 +2,9 @@ import pywikibot
 from pywikibot import textlib
 import re
 import Supporting.general_helpers as helpers
-
 def get_dismabig_targets(page):
+    if isinstance(page, str):
+        page = pywikibot.Page(pywikibot.Site('en', 'wikipedia'), page)
     items = []
     for line in page.text.splitlines():
         if re.search(r"==\s*See also\s*==", line) is not None:
