@@ -1,6 +1,15 @@
 import customtkinter as ctk
-import sys, os
-sys.path.append(os.path.dirname(os.path.dirname(__file__)))
+from pathlib import Path
+import sys
+
+REPO_ROOT = Path(__file__).resolve().parents[2]
+
+if not (REPO_ROOT / "Supporting").exists():
+    raise RuntimeError(
+        f"Could not find Supporting package in {REPO_ROOT}"
+    )
+
+sys.path.insert(0, str(REPO_ROOT))
 import pywikibot
 from pywikibot import textlib
 import Supporting.general_helpers as helpers
