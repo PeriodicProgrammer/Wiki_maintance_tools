@@ -13,7 +13,7 @@ sys.path.insert(0, str(REPO_ROOT))
 import pywikibot
 from pywikibot import textlib
 import Supporting.general_helpers as helpers
-from Supporting.colours import apply_text_styles
+from settings import apply_text_styles
 import delinker_funcs as dl_func
 import settings
 
@@ -24,12 +24,10 @@ site.login()
 
 def page_gen():
     print("Page generating")
-    if settings.Category is not None:
-        disambigs = helpers.walk_category(pywikibot.Category(site, settings.Category))
+    if settings.disambig_cat is not None:
+        disambigs = helpers.walk_category(pywikibot.Category(site, settings.disambig_cat))
     else:
-        import json
-        with open("Disambig_linker/disambiguation_pages.json", "r") as f:
-            disambigs = [pywikibot.Page(site, i) for i in json.load(f)]
+        disambigs = helpers.walk_category(pywikibot.Category(site, "Category:Disambiguation pages with many incoming links"))
     for disambig in disambigs:
         print(disambig)
         yield ("Disambig", disambig)
