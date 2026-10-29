@@ -17,8 +17,8 @@ from settings import apply_text_styles
 import delinker_funcs as dl_func
 import settings
 
-ctk.set_appearance_mode("dark")
-ctk.set_default_color_theme("blue")
+ctk.set_appearance_mode(settings.appearance_mode)
+ctk.set_default_color_theme(settings.default_color_theme)
 site = settings.site
 site.login()
 

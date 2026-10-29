@@ -23,10 +23,12 @@ def has_disambig_link(sec, target):
     links = helpers.get_wikilinks(sec)
     redirects = helpers.get_redirects(target)
     result = links & redirects
-    return result != 0
+    return result != set()
 
 def secs_with_disambig(page, target):
     sections = helpers.section_gen(page)
     for i in sections:
         if has_disambig_link(i, target):
             yield i
+
+ 
