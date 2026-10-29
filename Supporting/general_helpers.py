@@ -35,7 +35,8 @@ def get_wikilinks(text, full=False):
     if full:
         links = {"".join(i) for i in re.findall(r"(\[\[)([^\]\|]+)(\s?)(\|[^\]\|]*\s?)?(\]\])", text)}
     else:
-        links = {i[0] for i in re.findall(r"\[\[([^\]\|]+)\s?(\|[^\]\|]*\s?)?\]\]", text)}
+        links = {i[0][0].upper()+i[0][1:] for i in re.findall(r"\[\[([^\]\|]+)\s?(\|[^\]\|]*\s?)?\]\]", text)}
+    
     return links
 
 def get_redirects(page):
@@ -43,6 +44,13 @@ def get_redirects(page):
         page = pywikibot.Page(pywikibot.Site('en', 'wikipedia'), page)
     return {i.title() for i in page.redirects()}
 
+def has_link(text, target):
+    if isinstance(text, pywikibot.Page):
+        text = text.text
+    links = get_wikilinks(text)
+    redirects = get_redirects(target)
+    result = links & redirects
+    return result != 0
 
 
 if __name__ == "__main__":
