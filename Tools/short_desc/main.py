@@ -1,6 +1,7 @@
 import customtkinter as ctk
 from pathlib import Path
 import sys
+import re
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 
@@ -79,7 +80,8 @@ class App(ctk.CTk):
             self.page = next(self.gen)
             self.output1.delete("0.0", "end")
             self.output1.insert("end", self.page.title()+"\n", "Title")
-            self.output1.insert("end", self.page.text)
+            display_text = re.sub(r"/<ref\s?(\s?name\s?=\s?[^>]*>)?.*?<\/ref>/gm", "", self.page.text)
+            self.output1.insert("end", display_text)
         except StopIteration:
             self.output1.delete("0.0", "end")
             self.output1.insert("end", "Generator finished.")
@@ -92,7 +94,7 @@ class App(ctk.CTk):
         self.input_entry.delete(0, "end")
         if len(user_input) > 10:
             text = self.page.text
-            self.page.text = f"{{Short description|}}\n"+self.page.text
+            self.page.text = "{{Short description|"+user_input+"}}\n" + self.page.text
             self.page.save(f"+short desc using https://github.com/PeriodicProgrammer/Wiki_maintance_tools/tree/main {f"Note: {edit_desc}" if edit_desc else ""}")
         if len(user_input) > 60:
             pass
