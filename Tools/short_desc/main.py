@@ -27,7 +27,7 @@ site.login()
 class App(ctk.CTk):
     def __init__(self):
         super().__init__()
-        self.title("Disambiguation page delinker")
+        self.title("Short description creator")
         self.geometry("800x500")
 
         # Frame to hold the two outputs side-by-side
@@ -80,7 +80,7 @@ class App(ctk.CTk):
             self.page = next(self.gen)
             self.output1.delete("0.0", "end")
             self.output1.insert("end", self.page.title()+"\n", "Title")
-            display_text = re.sub(r"/<ref\s?(\s?name\s?=\s?[^>]*>)?.*?<\/ref>/gm", "", self.page.text)
+            display_text = re.sub(r"<ref\s?(\s?name\s?=\s?[^>]*>)?(.|\n)*?<\/ref>", "", self.page.text)
             self.output1.insert("end", display_text)
         except StopIteration:
             self.output1.delete("0.0", "end")
@@ -92,7 +92,7 @@ class App(ctk.CTk):
         edit_desc = self.edit_desc.get()
         self.edit_desc.delete(0, "end")
         self.input_entry.delete(0, "end")
-        if len(user_input) > 10:
+        if len(user_input) > 10 or user_input == "none":
             text = self.page.text
             self.page.text = "{{Short description|"+user_input+"}}\n" + self.page.text
             self.page.save(f"+short desc using https://github.com/PeriodicProgrammer/Wiki_maintance_tools/tree/main {f"Note: {edit_desc}" if edit_desc else ""}")
