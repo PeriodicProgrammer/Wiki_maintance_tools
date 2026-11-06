@@ -92,7 +92,7 @@ class App(ctk.CTk):
         edit_desc = self.edit_desc.get()
         self.edit_desc.delete(0, "end")
         self.input_entry.delete(0, "end")
-        if len(user_input) > 10 or user_input == "none":
+        if (len(user_input) > 10 or user_input == "none") and len(user_input) < 60:
             text = self.page.text
             self.page.text = "{{Short description|"+user_input+"}}\n" + self.page.text
             self.page.save(f"+short desc using https://github.com/PeriodicProgrammer/Wiki_maintance_tools/tree/main {f"Note: {edit_desc}" if edit_desc else ""}")
